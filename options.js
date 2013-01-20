@@ -62,6 +62,15 @@ function saveChanges() {
     message('Error: No urlsspecified');
     return;
   }
+  // Prune empty urls off the end.
+  for (var i = urls.length - 1; i >= 0; i--) {
+    if (urls[i] === '') {
+      urls.pop();
+      continue;
+    } else {
+      break;
+    }
+  }
   // Save it using the Chrome extension storage API.
   storage.set({'urls': urls}, function() {
     // Notify that we saved.

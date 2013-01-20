@@ -19,6 +19,31 @@ var submitButton = document.querySelector('button.submit');
 var addMoreButton = document.querySelector('button.add-more');
 var inputs = document.getElementsByClassName('css-url');
 
+// Setup an object to facilitate input creation.
+var inputItem = {
+  index: 0,
+  namePrefix: 'css-url',
+  el: document.createElement('input'),
+  parent: document.querySelector('.css-inputs'),
+  newInput: function(index) {
+    var input = this.el.cloneNode();
+    input.setAttribute('class', this.namePrefix);
+    input.setAttribute('name', this.namePrefix + '-' + index);
+    input.setAttribute('id', this.namePrefix + '-' + index);
+    return input;
+  },
+  add: function() {
+    this.parent.appendChild(this.newInput(this.index++));
+  },
+  init: function(num) {
+    this.el.setAttribute('size', 100);
+    this.el.setAttribute('placeholder', 'eg: http://www.csszengarden.com/zengarden-sample.css');
+    for (var i = 0; i < num; i++) {
+      this.add();
+    }
+  }
+};
+
 // Load any CSS that may have previously been saved.
 loadChanges();
 
@@ -45,8 +70,10 @@ function saveChanges() {
 }
 
 function loadChanges() {
+  // Get and set the saved values.
   storage.get({'urls': []}, function(items) {
-    console.log('items', items, 'urls', items.urls);
+    // Add as many inputs as needed.
+    inputItem.init(items.urls.length);
     // To avoid checking items.css we could specify storage.get({css: ''}) to
     // return a default value of '' if there is no css value yet.
     for (var i = 0, url; i < items.urls.length; i++) {
@@ -79,32 +106,6 @@ function message(msg) {
     message.innerText = '';
   }, 3000);
 }
-
-// Setup the options page.
-var inputItem = {
-  index: 0,
-  namePrefix: 'css-url',
-  el: document.createElement('input'),
-  parent: document.querySelector('.css-inputs'),
-  newInput: function(index) {
-    var input = this.el.cloneNode();
-    input.setAttribute('class', this.namePrefix);
-    input.setAttribute('name', this.namePrefix + '-' + index);
-    input.setAttribute('id', this.namePrefix + '-' + index);
-    return input;
-  },
-  add: function() {
-    this.parent.appendChild(this.newInput(this.index++));
-  },
-  init: function(num) {
-    this.el.setAttribute('size', 100);
-    this.el.setAttribute('placeholder', 'eg: http://www.csszengarden.com/zengarden-sample.css');
-    for (var i = 0; i < num; i++) {
-      this.add();
-    }
-  }
-};
-inputItem.init(3);
 
 function addInput() {
   inputItem.add();

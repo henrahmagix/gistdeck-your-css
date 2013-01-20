@@ -17,6 +17,7 @@ var storage = chrome.storage.local;
 var resetButton = document.querySelector('button.reset');
 var submitButton = document.querySelector('button.submit');
 var addMoreButton = document.querySelector('button.add-more');
+var inputs = document.getElementsByClassName('css-url');
 
 // Load any CSS that may have previously been saved.
 // loadChanges();
@@ -26,15 +27,21 @@ resetButton.addEventListener('click', reset);
 addMoreButton.addEventListener('click', addInput);
 
 function saveChanges() {
-  // Get the current CSS snippet from the form.
-  var cssCode = textarea.value;
+  // Get the CSS urls from the form.
+  var urls = [];
+  for (var i = 0, url; i < inputs.length; i++) {
+    url = inputs.item(i).value;
+    if (url !== '') {
+      urls.push(url);
+    }
+  }
   // Check that there's some code there.
-  if (!cssCode) {
+  if (! urls.length) {
     message('Error: No CSS specified');
     return;
   }
   // Save it using the Chrome extension storage API.
-  storage.set({'css': cssCode}, function() {
+  storage.set({'css': urls}, function() {
     // Notify that we saved.
     message('Settings saved');
   });
@@ -70,15 +77,16 @@ function message(msg) {
 }
 
 // Setup the options page.
-var inputs = {
+var inputItem = {
   index: 0,
-  namePrefix: 'css-input',
+  namePrefix: 'css-url',
   el: document.createElement('input'),
-  parent: document.querySelector('.cssInputs'),
+  parent: document.querySelector('.css-inputs'),
   newInput: function(index) {
     var input = this.el.cloneNode();
-    input.setAttribute('name', this.namePrefix + index);
-    input.setAttribute('id', this.namePrefix + index);
+    input.setAttribute('class', this.namePrefix);
+    input.setAttribute('name', this.namePrefix + '-' + index);
+    input.setAttribute('id', this.namePrefix + '-' + index);
     return input;
   },
   add: function() {
@@ -92,8 +100,8 @@ var inputs = {
     }
   }
 };
-inputs.init(3);
+inputItem.init(3);
 
 function addInput() {
-  inputs.add();
+  inputItem.add();
 }

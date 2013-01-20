@@ -45,7 +45,7 @@ function saveChanges() {
 }
 
 function loadChanges() {
-  storage.get({ 'urls': [] }, function(items) {
+  storage.get({'urls': []}, function(items) {
     console.log('items', items, 'urls', items.urls);
     // To avoid checking items.css we could specify storage.get({css: ''}) to
     // return a default value of '' if there is no css value yet.
@@ -57,14 +57,19 @@ function loadChanges() {
   });
 }
 
-function reset() {
-  // Remove the saved value from storage. storage.clear would achieve the same
-  // thing.
-  storage.remove('css', function(items) {
-    message('Reset stored CSS');
-  });
-  // Refresh the text area.
-  textarea.value = '';
+function reset(inputIndex, save) {
+  // Reset the value of single input, or all inputs if inputIndex not passed.
+  if (typeof inputIndex === 'number') {
+    inputs.item(inputIndex).value = '';
+  } else {
+    for (var i = 0; i < inputs.length; i++) {
+      inputs.item(i).value = '';
+    }
+  }
+  // Save the changes if asked to.
+  if (save) {
+    saveChanges();
+  }
 }
 
 function message(msg) {

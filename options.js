@@ -51,6 +51,10 @@ submitButton.addEventListener('click', saveChanges);
 resetButton.addEventListener('click', reset);
 addMoreButton.addEventListener('click', addInput);
 
+function addInput() {
+  inputItem.add();
+}
+
 function saveChanges() {
   // Get the CSS urls from the form.
   var urls = [];
@@ -108,8 +112,4 @@ function message(msg) {
   setTimeout(function() {
     message.innerText = '';
   }, 3000);
-}
-
-function addInput() {
-  inputItem.add();
 }

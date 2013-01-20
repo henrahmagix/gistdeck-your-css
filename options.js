@@ -16,13 +16,14 @@ var storage = chrome.storage.local;
 // Get at the DOM controls used in the sample.
 var resetButton = document.querySelector('button.reset');
 var submitButton = document.querySelector('button.submit');
-var textarea = document.querySelector('textarea');
+var addMoreButton = document.querySelector('button.add-more');
 
 // Load any CSS that may have previously been saved.
 // loadChanges();
 
 submitButton.addEventListener('click', saveChanges);
 resetButton.addEventListener('click', reset);
+addMoreButton.addEventListener('click', addInput);
 
 function saveChanges() {
   // Get the current CSS snippet from the form.
@@ -80,15 +81,19 @@ var inputs = {
     input.setAttribute('id', this.namePrefix + index);
     return input;
   },
-  add: function(index) {
-    this.parent.appendChild(this.newInput(index));
+  add: function() {
+    this.parent.appendChild(this.newInput(this.index++));
   },
   init: function(num) {
     this.el.setAttribute('size', 100);
     this.el.setAttribute('placeholder', 'eg: http://www.csszengarden.com/zengarden-sample.css');
     for (var i = 0; i < num; i++) {
-      this.add(i);
+      this.add();
     }
   }
 };
 inputs.init(3);
+
+function addInput() {
+  inputs.add();
+}

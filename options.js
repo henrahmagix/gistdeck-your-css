@@ -19,7 +19,7 @@ var submitButton = document.querySelector('button.submit');
 var textarea = document.querySelector('textarea');
 
 // Load any CSS that may have previously been saved.
-loadChanges();
+// loadChanges();
 
 submitButton.addEventListener('click', saveChanges);
 resetButton.addEventListener('click', reset);
@@ -67,3 +67,28 @@ function message(msg) {
     message.innerText = '';
   }, 3000);
 }
+
+// Setup the options page.
+var inputs = {
+  index: 0,
+  namePrefix: 'css-input',
+  el: document.createElement('input'),
+  parent: document.querySelector('.cssInputs'),
+  newInput: function(index) {
+    var input = this.el.cloneNode();
+    input.setAttribute('name', this.namePrefix + index);
+    input.setAttribute('id', this.namePrefix + index);
+    return input;
+  },
+  add: function(index) {
+    this.parent.appendChild(this.newInput(index));
+  },
+  init: function(num) {
+    this.el.setAttribute('size', 100);
+    this.el.setAttribute('placeholder', 'eg: http://www.csszengarden.com/zengarden-sample.css');
+    for (var i = 0; i < num; i++) {
+      this.add(i);
+    }
+  }
+};
+inputs.init(3);

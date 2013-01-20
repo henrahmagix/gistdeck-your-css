@@ -17,6 +17,9 @@
         background: #eee;
         padding: 5px;
       }
+      .cssInputs input {
+        display: block;
+      }
     </style>
   </head>
   <body>
@@ -24,16 +27,14 @@
     <h3>Gistdeck Your CSS Instructions</h3>
 
     <ol>
-      <li>Write CSS in this textarea and save</li>
-      <li>Navigate to some page</li>
+      <li>Add urls to CSS files here</li>
+      <li>Navigate to a gist on GitHub or Gist.io</li>
       <li>Click the browser action icon <img src="icon.png" /></li>
-      <li>Hey presto! CSS is injected!</li>
+      <li>Start presenting!</li>
     </ol>
 
-    <textarea name="style_url" id="style_url" cols=80 rows=24
-        placeholder="eg: * { font-size: 110%; }"></textarea>
+    <div class="cssInputs"></div>
 
-    <br/>
     <button class="submit">Save</button>
     <button class="reset">Reset</button>
 

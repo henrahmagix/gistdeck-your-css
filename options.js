@@ -55,21 +55,15 @@ function saveChanges() {
   // Get the CSS urls from the form.
   var urls = [];
   for (var i = 0, url; i < inputs.length; i++) {
-    urls.push(inputs.item(i).value);
+    url = inputs.item(i).value;
+    if (url !== '') {
+      urls.push(url);
+    }
   }
   // Check that there's some code there.
-  if (! urls.length) {
-    message('Error: No urlsspecified');
+  if (urls.length === 0) {
+    message('Error: No urls specified');
     return;
-  }
-  // Prune empty urls off the end.
-  for (var i = urls.length - 1; i >= 0; i--) {
-    if (urls[i] === '') {
-      urls.pop();
-      continue;
-    } else {
-      break;
-    }
   }
   // Save it using the Chrome extension storage API.
   storage.set({'urls': urls}, function() {

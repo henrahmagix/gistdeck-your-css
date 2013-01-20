@@ -20,7 +20,7 @@ var addMoreButton = document.querySelector('button.add-more');
 var inputs = document.getElementsByClassName('css-url');
 
 // Load any CSS that may have previously been saved.
-// loadChanges();
+loadChanges();
 
 submitButton.addEventListener('click', saveChanges);
 resetButton.addEventListener('click', reset);
@@ -30,31 +30,30 @@ function saveChanges() {
   // Get the CSS urls from the form.
   var urls = [];
   for (var i = 0, url; i < inputs.length; i++) {
-    url = inputs.item(i).value;
-    if (url !== '') {
-      urls.push(url);
-    }
+    urls.push(inputs.item(i).value);
   }
   // Check that there's some code there.
   if (! urls.length) {
-    message('Error: No CSS specified');
+    message('Error: No urlsspecified');
     return;
   }
   // Save it using the Chrome extension storage API.
-  storage.set({'css': urls}, function() {
+  storage.set({'urls': urls}, function() {
     // Notify that we saved.
     message('Settings saved');
   });
 }
 
 function loadChanges() {
-  storage.get('css', function(items) {
+  storage.get({ 'urls': [] }, function(items) {
+    console.log('items', items, 'urls', items.urls);
     // To avoid checking items.css we could specify storage.get({css: ''}) to
     // return a default value of '' if there is no css value yet.
-    if (items.css) {
-      textarea.value = items.css;
-      message('Loaded saved CSS.');
+    for (var i = 0, url; i < items.urls.length; i++) {
+      url = items.urls[i];
+      inputs.item(i).value = url;
     }
+    message('Loaded saved urls');
   });
 }
 

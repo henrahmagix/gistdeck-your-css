@@ -4,8 +4,35 @@
     <title>Popup | Gistdeck Your CSS</title>
     <style>
       body {
+        background-color: #954042;
+        border: 10px solid #193249;
+        border-radius: 5px;
+        color: white;
         font-family: sans-serif;
-        width: 200px;
+        margin: 0;
+        min-width: 200px;
+        padding: 10px;
+      }
+      #buttons .styles-button {
+        -webkit-border-radius:3px;
+        border-radius:3px;
+
+        background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#FFFFFF), to(#F0DEB8), color-stop(.3,#FDF0D1));
+
+        color:#836d4d;
+        display: block;
+        font-family:arial,helvetica,sans-serif;
+        font-size:15px;
+        font-weight:bold;
+        margin: 5px auto;
+        padding:6px 60px;
+        border: 1px solid #d4c198;
+      }
+      #buttons .styles-button:hover{
+        background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#F5F5F5), to(#EBD9B4), color-stop(.3,#F2E6C8));
+      }
+      #buttons .styles-button:focus {
+        outline: none;
       }
     </style>
   </head>

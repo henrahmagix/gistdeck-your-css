@@ -37,7 +37,13 @@ function addUrlButton(name, url) {
   buttonsWrapper.appendChild(newButton);
 }
 
+// Add click events to the buttons.
+for (var i = 0; i < buttons.length; i++) {
+  buttons[i].addEventListener('click', addStyles);
+}
+
 function addStyles(url) {
+  buttons.item(0).setAttribute('class', buttons.item(0).getAttribute('class') + ' change');
   var css;
   // Get cross-origin request.
   // Get source CSS from url.

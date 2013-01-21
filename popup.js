@@ -22,6 +22,7 @@ storage.get('urls', function(items) {
       value = item[1];
       addUrlButton(key, value);
     }
+    bindEvents();
   } else {
     var optionsUrl = chrome.extension.getURL('options.html');
     var optionsLink = '<a target="_blank" href="' + optionsUrl + '">Add them here.</a>';
@@ -38,12 +39,15 @@ function addUrlButton(name, url) {
 }
 
 // Add click events to the buttons.
-for (var i = 0; i < buttons.length; i++) {
-  buttons[i].addEventListener('click', addStyles);
+function bindEvents() {
+  for (var i = 0; i < buttons.length; i++) {
+    buttons[i].addEventListener('click', addStyles);
+  }
 }
 
-function addStyles(url) {
-  buttons.item(0).setAttribute('class', buttons.item(0).getAttribute('class') + ' change');
+function addStyles(e) {
+  var button = e.target;
+  var url = button.getAttribute('data-url');
   var css;
   // Get cross-origin request.
   // Get source CSS from url.

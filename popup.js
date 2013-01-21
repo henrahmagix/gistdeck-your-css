@@ -7,20 +7,21 @@
 // See note in options.js for rationale on why not to use "sync".
 var storage = chrome.storage.local;
 
-var message = document.querySelector('#message');
+var message = document.getElementById('message');
+var buttonsWrapper = document.getElementById('buttons');
+var buttons = document.getElementsByClassName('styles-button');
 
 // Check if there is CSS specified.
-storage.get('css', function(items) {
+storage.get('urls', function(items) {
   console.log(items);
-  // If there is CSS specified, inject it into the page.
-  if (items.css) {
-    chrome.tabs.insertCSS(null, {code: items.css}, function() {
-      if (chrome.extension.lastError) {
-        message.innerText = 'Not allowed to inject CSS into special page.';
-      } else {
-        message.innerText = 'Injected style!';
-      }
-    });
+  // If there are CSS urls specified, add them to the popup as buttons.
+  if (items.urls) {
+    for (var i = 0, item, key, url; i < items.urls.length; i++) {
+      item = items.urls[i];
+      key = item[0];
+      value = item[1];
+      addUrlButton(key, value);
+    }
   } else {
     var optionsUrl = chrome.extension.getURL('options.html');
     message.innerHTML = 'Set a style in the <a target="_blank" href="' +
@@ -28,3 +29,28 @@ storage.get('css', function(items) {
   }
 });
 
+function addUrlButton(name, url) {
+  var newButton = document.createElement('button');
+  newButton.appendChild(document.createTextNode(name));
+  newButton.setAttribute('data-url', url);
+  newButton.setAttribute('class', 'styles-button');
+  buttonsWrapper.appendChild(newButton);
+}
+
+function addStyles(url) {
+  var css;
+  // Get cross-origin request.
+  // Get source CSS from url.
+  // Insert CSS into tab.
+  chrome.tabs.insertCSS(null, {code: css}, function() {
+    if (chrome.extension.lastError) {
+      message.innerText = 'Not allowed to inject CSS into special page.';
+    } else {
+      message.innerText = 'Injected style!';
+    }
+  });
+}
+
+function runGistdeck() {
+
+}

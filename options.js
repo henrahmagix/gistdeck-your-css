@@ -85,11 +85,6 @@ function saveChanges() {
       urls.push([key, url]);
     }
   }
-  // Check that there's some code there.
-  if (urls.length === 0) {
-    message('Error: No urls specified');
-    return;
-  }
   // Save it using the Chrome extension storage API.
   storage.set({'urls': urls}, function() {
     // Notify that we saved.

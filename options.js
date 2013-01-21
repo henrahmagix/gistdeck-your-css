@@ -17,27 +17,46 @@ var storage = chrome.storage.local;
 var resetButton = document.querySelector('button.reset');
 var submitButton = document.querySelector('button.submit');
 var addMoreButton = document.querySelector('button.add-more');
-var inputs = document.getElementsByClassName('css-url');
+var sourceItems = document.getElementsByClassName('css-url-wrapper');
 
 // Setup an object to facilitate input creation.
 var inputItem = {
   index: 0,
-  namePrefix: 'css-url',
-  el: document.createElement('input'),
+  wrapperPrefix: 'css-url',
+  keyPrefix: 'url-key',
+  valuePrefix: 'url-value',
   parent: document.querySelector('.css-inputs'),
-  newInput: function(index) {
-    var input = this.el.cloneNode();
-    input.setAttribute('class', this.namePrefix);
-    input.setAttribute('name', this.namePrefix + '-' + index);
-    input.setAttribute('id', this.namePrefix + '-' + index);
+  add: function() {
+    var key = this.newInput(this.index, 'key');
+    var value = this.newInput(this.index, 'value');
+    var div = document.createElement('div');
+    div.setAttribute('id', this.wrapperPrefix + '-' + this.index);
+    div.setAttribute('class', this.wrapperPrefix + '-wrapper');
+    div.appendChild(key);
+    div.appendChild(value);
+    this.parent.appendChild(div);
+    this.index++;
+  },
+  newInput: function(index, type) {
+    var input = document.createElement('input');
+    var classes = this.wrapperPrefix + '-input';
+    var size = 0;
+    var placeholder = '';
+    if (type === 'key') {
+      classes += ' ' + this.keyPrefix;
+      size = 30;
+      placeholder = 'eg: My CSS';
+    } else if (type === 'value') {
+      classes += ' ' + this.valuePrefix;
+      size = 100;
+      placeholder = 'eg: http://www.csszengarden.com/zengarden-sample.css';
+    }
+    input.setAttribute('class', classes);
+    input.setAttribute('size', size);
+    input.setAttribute('placeholder', placeholder);
     return input;
   },
-  add: function() {
-    this.parent.appendChild(this.newInput(this.index++));
-  },
   init: function(num) {
-    this.el.setAttribute('size', 100);
-    this.el.setAttribute('placeholder', 'eg: http://www.csszengarden.com/zengarden-sample.css');
     for (var i = 0; i < num; i++) {
       this.add();
     }
@@ -58,10 +77,12 @@ function addInput() {
 function saveChanges() {
   // Get the CSS urls from the form.
   var urls = [];
-  for (var i = 0, url; i < inputs.length; i++) {
-    url = inputs.item(i).value;
-    if (url !== '') {
-      urls.push(url);
+  for (var i = 0, item, key, url; i < sourceItems.length; i++) {
+    itemChildren = sourceItems.item(i).children;
+    key = itemChildren[0].value;
+    url = itemChildren[1].value;
+    if (url !== '' && key !== '') {
+      urls.push([key, url]);
     }
   }
   // Check that there's some code there.
@@ -83,9 +104,12 @@ function loadChanges() {
     inputItem.init(items.urls.length);
     // To avoid checking items.css we could specify storage.get({css: ''}) to
     // return a default value of '' if there is no css value yet.
-    for (var i = 0, url; i < items.urls.length; i++) {
-      url = items.urls[i];
-      inputs.item(i).value = url;
+    for (var i = 0, item, key, url; i < items.urls.length; i++) {
+      item = items.urls[i];
+      key = item[0];
+      url = item[1];
+      sourceItems.item(i).children[0].value = key;
+      sourceItems.item(i).children[1].value = url;
     }
     message('Loaded saved urls');
   });
@@ -94,10 +118,12 @@ function loadChanges() {
 function reset(inputIndex, save) {
   // Reset the value of single input, or all inputs if inputIndex not passed.
   if (typeof inputIndex === 'number') {
-    inputs.item(inputIndex).value = '';
+    sourceItems.item(inputIndex).children[0].value = '';
+    sourceItems.item(inputIndex).children[1].value = '';
   } else {
-    for (var i = 0; i < inputs.length; i++) {
-      inputs.item(i).value = '';
+    for (var i = 0; i < sourceItems.length; i++) {
+      sourceItems.item(i).children[0].value = '';
+      sourceItems.item(i).children[1].value = '';
     }
   }
   // Save the changes if asked to.

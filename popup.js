@@ -24,8 +24,8 @@ storage.get('urls', function(items) {
     }
   } else {
     var optionsUrl = chrome.extension.getURL('options.html');
-    message.innerHTML = 'Set a style in the <a target="_blank" href="' +
-        optionsUrl + '">options page</a> first.';
+    var optionsLink = '<a target="_blank" href="' + optionsUrl + '">Add them here.</a>';
+    message.innerHTML = 'No style sources set. ' + optionsLink;
   }
 });
 

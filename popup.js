@@ -15,7 +15,7 @@ var buttons = document.getElementsByClassName('styles-button');
 storage.get('urls', function(items) {
   console.log(items);
   // If there are CSS urls specified, add them to the popup as buttons.
-  if (items.urls) {
+  if (items.urls.length > 0) {
     for (var i = 0, item, key, url; i < items.urls.length; i++) {
       item = items.urls[i];
       key = item[0];

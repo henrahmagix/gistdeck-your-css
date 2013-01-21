@@ -101,7 +101,8 @@ function loadChanges() {
   // Get and set the saved values.
   storage.get({'urls': []}, function(items) {
     // Add as many inputs as needed.
-    inputItem.init(items.urls.length);
+    var numberOfItems = Math.max(3, items.urls.length);
+    inputItem.init(numberOfItems);
     // To avoid checking items.css we could specify storage.get({css: ''}) to
     // return a default value of '' if there is no css value yet.
     for (var i = 0, item, key, url; i < items.urls.length; i++) {

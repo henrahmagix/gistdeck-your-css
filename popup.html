@@ -51,14 +51,14 @@
       button:last-child {
         margin-bottom: 0;
       }
-      button:hover,
-      button:active {
+      button:not(:disabled):hover,
+      button:not(:disabled):active {
         color: #eee;
       }
-      button:hover {
+      button:not(:disabled):hover {
         background: #555
       }
-      button:active {
+      button:not(:disabled):active {
         background: #333
       }
       button:focus {
@@ -68,6 +68,10 @@
         background: #f86;
         border-color: #f32;
         color: #000;
+      }
+      button:disabled {
+        color: graytext;
+        cursor: default;
       }
       #wrapper {
         display: table-row;

@@ -43,6 +43,7 @@ function bindEvents() {
     for (var i = 0; i < styleButtons.length; i++) {
         styleButtons[i].addEventListener('click', addStyle);
     }
+    scriptButton.addEventListener('click', runGistdeck);
 }
 
 function addStyle(e) {
@@ -84,6 +85,19 @@ function addStyle(e) {
     xhr.send();
 }
 
-function runGistdeck() {
-
+function runGistdeck(e) {
+    var gistdeckFile = 'gistdeck.js';
+    chrome.extension.sendRequest('gistdeck.start', function(tabIsDecked) {
+        if (tabIsDecked) {
+            message.innerText = 'Already running';
+        } else {
+            message.innerText = 'Decking out';
+            chrome.tabs.executeScript(null, {file: gistdeckFile}, function(result) {
+                console.log(result);
+                if (result) {
+                    scriptButton.disabled = true;
+                }
+            });
+        }
+    });
 }

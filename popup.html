@@ -3,15 +3,18 @@
   <head>
     <title>Popup | Gistdeck Your CSS</title>
     <style>
+      html {
+        border-radius: 10px;
+        height: 100%;
+      }
       body {
-        background-color: #954042;
-        background-color: #62b1f6;
-        border: 10px solid #193249;
+        background-color: #333;
+        border: 10px solid #bbb;
         border-radius: 5px;
         color: white;
         font-family: sans-serif;
         margin: 0;
-        min-width: 200px;
+        width: 300px;
         padding: 10px;
       }
       a {
@@ -28,42 +31,82 @@
       button {
         cursor: pointer;
       }
-      #buttons .styles-button {
-        -webkit-border-radius:3px;
-        border-radius:3px;
-
-        background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#FFFFFF), to(#F0DEB8), color-stop(.3,#FDF0D1));
-
-        color:#836d4d;
+      button {
+        -webkit-border-radius: 3px;
+        border-radius: 3px;
+        background-color: #eee;
+        color: #000;
         display: block;
-        font-family:arial,helvetica,sans-serif;
-        font-size:15px;
-        font-weight:bold;
+        font-family: arial,helvetica,sans-serif;
+        font-size: 15px;
+        font-weight: bold;
         margin: 5px auto;
-        padding:6px 60px;
-        border: 1px solid #d4c198;
+        padding: 6px 0;
+        width: 135px;
+        border: 1px solid #000;
       }
-      #buttons .styles-button:hover{
-        background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#F5F5F5), to(#EBD9B4), color-stop(.3,#F2E6C8));
+      button:first-child {
+        margin-top: 0;
       }
-      #buttons .styles-button:focus {
+      button:last-child {
+        margin-bottom: 0;
+      }
+      button:hover,
+      button:active {
+        color: #eee;
+      }
+      button:hover {
+        background: #555
+      }
+      button:active {
+        background: #333
+      }
+      button:focus {
         outline: none;
       }
-      #buttons .styles-button.set {
-        background: #954042;
-        border-color: #226;
-        color: #fff;
+      button.set {
+        background: #f86;
+        border-color: #f32;
+        color: #000;
+      }
+      #wrapper {
+        display: table-row;
+      }
+      #script-button-wrapper,
+      #style-buttons {
+        display: table-cell;
+        height: 100%;
+        width: 135px;
+      }
+      #script-button-wrapper {
+        border-right: 5px solid #fff;
+        padding-right: 10px;
+        position: relative;
+      }
+      #script-button-wrapper button {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+      }
+      #style-buttons {
+        border-left: 5px solid #fff;
+        padding-left: 10px;
       }
       #message {
         background-color: #fff;
-        color: #954042;
+        color: #944;
         padding: 10px;
       }
     </style>
   </head>
   <body>
-    <div id="buttons"></div>
-    <div id="message"></div>
+    <div id="wrapper">
+      <div id="script-button-wrapper">
+        <button id="script-button">Run</button>
+      </div>
+      <div id="style-buttons"></div>
+    </div>
+    <div id="message" style="display:none;"></div>
     <script src="popup.js"></script>
   </body>
 </html>

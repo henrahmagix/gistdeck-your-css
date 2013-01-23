@@ -8,19 +8,19 @@
 var storage = chrome.storage.local;
 
 var message = document.getElementById('message');
-var buttonsWrapper = document.getElementById('buttons');
-var buttons = document.getElementsByClassName('styles-button');
+var styleButtonsWrapper = document.getElementById('style-buttons');
+var styleButtons = document.getElementsByClassName('style');
+var scriptButton = document.getElementById('script-button');
 
 // Check if there is CSS specified.
 storage.get('urls', function(items) {
-    console.log(items);
     // If there are CSS urls specified, add them to the popup as buttons.
     if (items.urls.length > 0) {
         for (var i = 0, item, key, url; i < items.urls.length; i++) {
             item = items.urls[i];
             key = item[0];
             value = item[1];
-            addUrlButton(key, value);
+            addStyleButton(key, value);
         }
         bindEvents();
     } else {
@@ -30,22 +30,22 @@ storage.get('urls', function(items) {
     }
 });
 
-function addUrlButton(name, url) {
+function addStyleButton(name, url) {
     var newButton = document.createElement('button');
     newButton.appendChild(document.createTextNode(name));
     newButton.setAttribute('data-url', url);
-    newButton.setAttribute('class', 'styles-button');
-    buttonsWrapper.appendChild(newButton);
+    newButton.setAttribute('class', 'style');
+    styleButtonsWrapper.appendChild(newButton);
 }
 
 // Add click events to the buttons.
 function bindEvents() {
-    for (var i = 0; i < buttons.length; i++) {
-        buttons[i].addEventListener('click', addStyles);
+    for (var i = 0; i < styleButtons.length; i++) {
+        styleButtons[i].addEventListener('click', addStyle);
     }
 }
 
-function addStyles(e) {
+function addStyle(e) {
     var button = e.target;
     var url = button.getAttribute('data-url');
     var css;

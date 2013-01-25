@@ -1,8 +1,7 @@
 var deckedTabs = {};
 
-chrome.extension.onRequest.addListener(onRequest);
-
-function onRequest(request, sender, sendResponse) {
+// Listen for requests.
+chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
     var tab;
     chrome.tabs.query(
         {
@@ -34,4 +33,9 @@ function onRequest(request, sender, sendResponse) {
             }
         }
     );
-}
+});
+
+// Remove tab from deckedTabs when closed.
+chrome.tabs.onRemoved.addListener(function(tabId, removeInfo) {
+    delete deckedTabs[tabId];
+});

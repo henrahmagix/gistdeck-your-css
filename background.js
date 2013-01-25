@@ -20,17 +20,12 @@ chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
                     deckedTabs[tab.id] = true;
                     sendResponse(false);
                 }
-                return;
-            }
-
-            if (request === 'gistdeck.stop') {
+            } else if (request === 'gistdeck.stop') {
                 delete deckedTabs[tab.id];
-                return;
-            }
-
-            if (request === 'gistdeck.check') {
+            } else if (request === 'gistdeck.check') {
                 sendResponse(deckedTabs[tab.id]);
             }
+            return;
         }
     );
 });

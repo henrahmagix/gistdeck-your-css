@@ -27,7 +27,7 @@ article p {
 
 /* line 20, ../sass/main.sass */
 header {
-  background: url(../img/incuna_logo.png) no-repeat center;
+  background: url('https://raw.github.com/henrahmagix/gistdeck-your-css/css-urls/incuna_logo.png') no-repeat center;
   height: 200px;
   margin-top: -200px;
   text-align: center;

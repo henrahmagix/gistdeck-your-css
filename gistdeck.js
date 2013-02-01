@@ -78,10 +78,14 @@ if ($) {
     $(document).keydown(function(e) {
       var key = e.which || e.keyCode || e.charCode;
       switch (key) {
-        case 37:
+        case 8:  // Backspace
+        case 37: // Left arrow
+        case 38: // Up arrow
           prevSlide();
           break;
-        case 39:
+        case 13: // Enter
+        case 39: // Right arrow
+        case 40: // Down arrow
           nextSlide();
           break;
         default:

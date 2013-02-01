@@ -61,6 +61,12 @@ if ($) {
       'H2': 20
     }[slides[n].tagName];
 
+    if (host === 'gist.io' && n === 0) {
+      // If this is the first slide, we need some room above.
+      padding = titleTop;
+      s.css('margin-top', padding);
+    }
+
     $(document).scrollTop(top - padding);
   }
 
@@ -73,7 +79,13 @@ if ($) {
     slides.not(slides.first()).css('margin-top', $window.height());
     // Also set this gap between the last slide element and the slides container.
     // This stops the end slide always being at the bottom of the window.
-    $('.markdown-body').css('margin-bottom', $window.height());
+    if (host === 'gist.github.com') {
+      $('.markdown-body').css('margin-bottom', $window.height());
+    } else if (host === 'gist.io') {
+      $('.file').css('margin-bottom', $window.height());
+      // Hide the ID
+      $('#gistid').hide();
+    }
 
     $(document).keydown(function(e) {
       var key = e.which || e.keyCode || e.charCode;

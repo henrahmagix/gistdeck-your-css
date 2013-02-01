@@ -3,10 +3,6 @@
   "description": "Kick-off Gistdeck on a gist with your own CSS.",
   "version": "0.1",
 
-  "background": {
-    "scripts": ["background.js"]
-  },
-
   "content_scripts": [
     {
       "matches": ["http://*/*", "https://*/*"],

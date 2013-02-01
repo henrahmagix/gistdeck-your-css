@@ -78,7 +78,7 @@ function fetchStyle(xhr, tab) {
             css = xhr.responseText;
             if (css) {
                 // Insert CSS into tab.
-                chrome.tabs.sendMessage(tab.id, {gistdeck: true, style: css}, function(response) {
+                chrome.tabs.sendMessage(tab.id, {gistdeck: true, type: 'style', style: css}, function(response) {
                     if (chrome.extension.lastError) {
                         // Show if there's been an error.
                         message.innerText = 'Not allowed to inject CSS into special page.';
@@ -99,18 +99,28 @@ function fetchStyle(xhr, tab) {
 }
 
 function runGistdeck(e) {
-    var gistdeckFile = 'gistdeck.js';
-    chrome.extension.sendRequest('gistdeck.start', function(tabIsDecked) {
-        if (tabIsDecked) {
-            message.innerText = 'Already running';
-        } else {
-            message.innerText = 'Decking out';
-            chrome.tabs.executeScript(null, {file: gistdeckFile}, function(result) {
-                console.log(result);
-                if (result) {
-                    scriptButton.disabled = true;
+    // Get current tab.
+    chrome.tabs.query(
+        {
+            active: true,
+            currentWindow: true
+        },
+        function(tabs) {
+            var tab = tabs[0];
+            chrome.tabs.sendMessage(tab.id, {gistdeck: true, type: 'script', script: chrome.extension.getURL('gistdeck.js')}, function(tabIsDecked) {
+                if (tabIsDecked) {
+                    message.innerText = 'Already running';
+                } else {
+                    message.innerText = 'Decking out';
+                    chrome.tabs.executeScript(tab.id, {file: 'jquery.min.js'}, function(result) {
+                        chrome.tabs.executeScript(tab.id, {file: 'gistdeck.js'}, function(result) {
+                            if (result) {
+                                scriptButton.disabled = true;
+                            }
+                        });
+                    });
                 }
             });
         }
-    });
+    );
 }

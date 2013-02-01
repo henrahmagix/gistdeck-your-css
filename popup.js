@@ -47,42 +47,55 @@ function bindEvents() {
 }
 
 function addStyle(e) {
-    var button = e.target;
-    var url = button.getAttribute('data-url');
-    var css;
-    // Create cross-origin request.
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', url, true);
-    xhr.onreadystatechange = function() {
-        // Only do something when this xhr has finished.
-        if (xhr.readyState == 4) {
-            if (xhr.status === 200) {
-                // When xhr has completed and it returned success, check if there's CSS
-                // and insert it. xhr.responseText should contain the CSS.
-                css = xhr.responseText;
-                if (css) {
-                    // Insert CSS into tab.
-                    chrome.tabs.insertCSS(null, {code: css}, function() {
-                        if (chrome.extension.lastError) {
-                            // Show if there's been an error.
-                            message.innerText = 'Not allowed to inject CSS into special page.';
-                        } else {
-                            // Assumed successful injection. Should do further tests.
-                            message.innerText = 'Injected style!';
-                        }
-                    });
-                } else {
-                    // xhr.responseText was empty, so no CSS.
-                    message.innerText = 'No CSS returned.'
-                }
+    // Get current tab.
+    chrome.tabs.query(
+        {
+            active: true,
+            currentWindow: true
+        },
+        function(tabs) {
+            var tab = tabs[0];
+            var button = e.target;
+            var url = button.getAttribute('data-url');
+            // Create cross-origin request.
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', url, true);
+            xhr.onreadystatechange = function() {
+                fetchStyle(xhr, tab);
+            };
+            // Go fetch! Good boy!
+            xhr.send();
+        }
+    );
+}
+
+function fetchStyle(xhr, tab) {
+    // Only do something when this xhr has finished.
+    if (xhr.readyState == 4) {
+        if (xhr.status === 200) {
+            // When xhr has completed and it returned success, check if there's CSS
+            // and insert it. xhr.responseText should contain the CSS.
+            css = xhr.responseText;
+            if (css) {
+                // Insert CSS into tab.
+                chrome.tabs.sendMessage(tab.id, {gistdeck: true, style: css}, function(response) {
+                    if (chrome.extension.lastError) {
+                        // Show if there's been an error.
+                        message.innerText = 'Not allowed to inject CSS into special page.';
+                    } else {
+                        // Assumed successful injection. Should do further tests.
+                        message.innerText = response;
+                    }
+                });
             } else {
-                // xhr returned a status other than 200, meaning failure of somekind.
-                message.innerText = 'Cross-origin request failed or was denied.'
+                // xhr.responseText was empty, so no CSS.
+                message.innerText = 'No CSS returned.';
             }
+        } else {
+            // xhr returned a status other than 200, meaning failure of somekind.
+            message.innerText = 'Cross-origin request failed or was denied.';
         }
     }
-    // Go fetch! Good boy!
-    xhr.send();
 }
 
 function runGistdeck(e) {

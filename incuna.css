@@ -1,0 +1,45 @@
+/* line 1, ../sass/main.sass */
+body {
+  background-color: #fe7f00;
+}
+
+/* line 4, ../sass/main.sass */
+body, article h2, article h3, article p {
+  color: white;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  font-weight: 300;
+}
+
+/* line 11, ../sass/main.sass */
+article h1, article h2 {
+  font-size: 56px;
+}
+/* line 13, ../sass/main.sass */
+article h3 {
+  font-weight: 700;
+  text-align: center;
+}
+/* line 16, ../sass/main.sass */
+article p {
+  font-size: 26px;
+  line-height: 1.5;
+}
+
+/* line 20, ../sass/main.sass */
+header {
+  background: url(../img/incuna_logo.png) no-repeat center;
+  height: 200px;
+  margin-top: -200px;
+  text-align: center;
+}
+
+/* line 26, ../sass/main.sass */
+.content #description {
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  font-weight: 300;
+}
+
+/* line 31, ../sass/main.sass */
+#gistid {
+  display: none;
+}
